@@ -16,16 +16,32 @@ class Customer
     @id = customer[ 'id' ].to_i()
   end
 
-  def update( new_params )
-    @name = new_params[ 'name' ] if new_params[ 'name' ]
-    @funds = new_params[ 'funds' ].to_f() if new_params[ 'funds' ]
-    sql = "UPDATE customers SET ( name, funds ) = ( '#{@name}', #{@funds} ) WHERE id = #{@id};"
-    SqlRunner.run( sql )
+  def update?( new_params )
+    customer_in_db = !Customer.find( @id ).empty?()
+    if customer_in_db
+
+      @name = new_params[ 'name' ] if new_params[ 'name' ]
+      @funds = new_params[ 'funds' ].to_f() if new_params[ 'funds' ]
+      sql = "UPDATE customers SET ( name, funds ) = ( '#{@name}', #{@funds} ) WHERE id = #{@id};"
+      SqlRunner.run( sql )
+      return true
+
+    else
+
+      return false
+
+    end
   end
 
-  def delete()
-    sql = "DELETE FROM customers WHERE id = #{@id};"
-    SqlRunner.run( sql )
+  def delete?()
+    customer_in_db = !Customer.find( @id ).empty?()
+    if customer_in_db
+      sql = "DELETE FROM customers WHERE id = #{@id};"
+      SqlRunner.run( sql )
+      return true
+    else
+      return false
+    end
   end
 
   def self.find( search_id )

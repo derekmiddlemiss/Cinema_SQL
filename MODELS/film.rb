@@ -16,16 +16,32 @@ class Film
     @id = result[ 'id' ].to_i()
   end
 
-  def update( new_params )
-    @name = new_params[ 'name' ] if new_params[ 'name' ]
-    @price = new_params[ 'price' ].to_f() if new_params[ 'price' ]
-    sql = "UPDATE films SET ( title, price ) = ( '#{@title}', #{@price} ) WHERE id = #{@id};"
-    SqlRunner.run( sql )
+  def update?( new_params )
+    film_in_db = !Film.find( @id ).empty?()
+    if film_in_db
+
+      @name = new_params[ 'name' ] if new_params[ 'name' ]
+      @price = new_params[ 'price' ].to_f() if new_params[ 'price' ]
+      sql = "UPDATE films SET ( title, price ) = ( '#{@title}', #{@price} ) WHERE id = #{@id};"
+      SqlRunner.run( sql )
+      return true
+
+    else
+
+      return false
+
+    end
   end
 
-  def delete()
-    sql = "DELETE FROM films WHERE id = #{@id};"
-    SqlRunner.run( sql )
+  def delete?()
+    film_in_db = !Film.find( @id ).empty?()
+    if film_in_db
+      sql = "DELETE FROM films WHERE id = #{@id};"
+      SqlRunner.run( sql )
+      return true
+    else
+      return false
+    end
   end
 
   def self.find( search_id )
