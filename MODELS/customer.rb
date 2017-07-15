@@ -18,7 +18,7 @@ class Customer
 
   def update( new_params )
     @name = new_params[ 'name' ] if new_params[ 'name' ]
-    @funds = new_params[ 'funds' ] if new_params[ 'funds' ]
+    @funds = new_params[ 'funds' ].to_f() if new_params[ 'funds' ]
     sql = "UPDATE customers SET ( name, funds ) = ( '#{@name}', #{@funds} ) WHERE id = #{@id};"
     SqlRunner.run( sql )
   end
@@ -48,5 +48,5 @@ class Customer
     result = customers.map { |customer| Customer.new( customer ) }
     return result
   end
-  
+
 end
