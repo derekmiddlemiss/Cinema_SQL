@@ -121,6 +121,8 @@ hopefully_sw_at_i = Ticket.find( ticket2.id() )
 hf_films = harrison_ford.films()
 br_customers = blade_runner.customers()
 
+harrison_ford.buy_ticket( interstellar )
+
 binding.pry
 
 nil 

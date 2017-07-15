@@ -33,6 +33,22 @@ class Customer
     end
   end
 
+  def buy_ticket( film )
+    if @funds >= film.price()
+      ticket = Ticket.new( {
+        'customer_id' => @id,
+        'film_id' => film.id()
+        } )
+      binding.pry
+      if ticket.save?()
+        @funds -= film.price()
+        return true
+      end
+    else
+      return false
+    end
+  end
+      
   def delete?()
     customer_in_db = !Customer.find( @id ).empty?()
     if customer_in_db
