@@ -44,6 +44,13 @@ class Film
     end
   end
 
+  def customers()
+    sql = "SELECT customers.* FROM customers 
+    INNER JOIN tickets ON tickets.customer_id = customers.id
+    WHERE tickets.film_id = #{@id};"
+    return Customer.map_items( sql )
+  end
+
   def self.find( search_id )
     sql = "SELECT * FROM films WHERE id = #{search_id};"
     return self.map_items( sql )
