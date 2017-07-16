@@ -115,13 +115,21 @@ ticket4 = Ticket.new( {
   } )
 t4_saved = ticket4.save?()
 
+ticket5 = Ticket.new( {
+  'customer_id' => harrison_ford.id(),
+  'film_id' => blade_runner.id()
+  } )
+t5_saved = ticket5.save?()
+
 tickets = Ticket.list_all()
 hopefully_sw_at_i = Ticket.find( ticket2.id() )
 
 hf_films = harrison_ford.films()
+hf_number_tickets = harrison_ford.number_tickets()
 br_customers = blade_runner.customers()
+br_number_tickets = blade_runner.number_tickets()
 
-harrison_ford.buy_ticket( interstellar )
+ticket = harrison_ford.buy_ticket( interstellar )
 
 binding.pry
 

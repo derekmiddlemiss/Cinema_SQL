@@ -36,6 +36,8 @@ class Film
   def delete?()
     film_in_db = !Film.find( @id ).empty?()
     if film_in_db
+      sql = "DELETE FROM tickets WHERE film_id = #{@id};"
+      SqlRunner.run( sql )
       sql = "DELETE FROM films WHERE id = #{@id};"
       SqlRunner.run( sql )
       return true
@@ -51,6 +53,11 @@ class Film
     return Customer.map_items( sql )
   end
 
+  def number_tickets()
+    sql = "SELECT * FROM tickets WHERE film_id = #{@id};"
+    return SqlRunner.run( sql ).count()
+  end
+
   def self.find( search_id )
     sql = "SELECT * FROM films WHERE id = #{search_id};"
     return self.map_items( sql )
@@ -62,6 +69,8 @@ class Film
   end
 
   def self.delete_all()
+    sql = "DELETE FROM tickets;"
+    SqlRunner.run( sql )
     sql = "DELETE FROM films;"
     SqlRunner.run( sql )
   end

@@ -42,7 +42,7 @@ class Customer
       binding.pry
       if ticket.save?()
         @funds -= film.price()
-        return true
+        return ticket
       end
     else
       return false
@@ -52,6 +52,8 @@ class Customer
   def delete?()
     customer_in_db = !Customer.find( @id ).empty?()
     if customer_in_db
+      sql = "DELETE FROM tickets WHERE customer_id = #{@id};"
+      SqlRunner.run( sql )
       sql = "DELETE FROM customers WHERE id = #{@id};"
       SqlRunner.run( sql )
       return true
@@ -67,6 +69,11 @@ class Customer
     return Film.map_items( sql )
   end
 
+  def number_tickets()
+    sql = "SELECT * FROM tickets WHERE customer_id = #{@id};"
+    return SqlRunner.run( sql ).count()
+  end
+
   def self.find( search_id )
     sql = "SELECT * FROM customers WHERE id = #{search_id};"
     return self.map_items( sql )
@@ -78,6 +85,8 @@ class Customer
   end
 
   def self.delete_all()
+    sql = "DELETE FROM tickets;"
+    SqlRunner.run( sql )
     sql = "DELETE FROM customers;"
     SqlRunner.run( sql )
   end
